@@ -25,7 +25,8 @@ export default {
             .set({
               displayName: user.displayName,
               photoURL: user.photoURL,
-              email: user.email
+              email: user.email,
+              online: true
             })
         })
         .catch(error => {

@@ -98,7 +98,17 @@ export default {
   },
   methods: {
     logout () {
-      this.$auth.signOut()
+      var userId = this.user.uid
+      this.$auth.signOut().then(() => {
+        this.$db.collection('users')
+          .doc(userId)
+          .update({
+            online: false
+          })
+      }).catch((error) => {
+        this.$q.notify('error on Logout')
+        console.error(`Error on logout: ${error.message}`)
+      })
     }
   }
 }
