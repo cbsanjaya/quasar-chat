@@ -12,10 +12,28 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Mini Chat
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn round>
+          <q-avatar>
+            <img :src="user.photoURL">
+          </q-avatar>
+
+          <q-menu
+            transition-show="flip-right"
+            transition-hide="flip-left"
+          >
+            <q-list style="min-width: 100px">
+              <q-item clickable @click="logout">
+                <q-item-section>
+                  <q-item-label>Logout</q-item-label>
+                  <q-item-label caption>{{ user.displayName || user.email }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -30,13 +48,29 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Group Chat
         </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item
+          v-for="room in rooms"
+          :key="room.id"
+          clickable
+          tag="a"
+          :to="{ name: 'chat-room', params: { room: room.id } }"
+        >
+          <q-item-section
+            v-if="room.icon"
+            avatar
+          >
+            <q-icon :name="room.icon" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>{{ room.name }}</q-item-label>
+            <q-item-label caption>
+              {{ room.description }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -47,56 +81,24 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
-
 export default {
   name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
 
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: [
-        {
-          title: 'Docs',
-          caption: 'quasar.dev',
-          icon: 'school',
-          link: 'https://quasar.dev'
-        },
-        {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
-        },
-        {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
-        },
-        {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
-        },
-        {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
-        },
-        {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        }
-      ]
+      user: this.$auth.currentUser,
+      rooms: []
+    }
+  },
+  firestore () {
+    return {
+      rooms: this.$db.collection('rooms')
+    }
+  },
+  methods: {
+    logout () {
+      this.$auth.signOut()
     }
   }
 }
