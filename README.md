@@ -1,4 +1,4 @@
-# quasar-chat
+# Mini Chat
 Aplikasi Chatting Sederhana Pakai Quasar dan Firebase
 
 ## Kebutuhan Awal
@@ -10,3 +10,28 @@ yarn global add @quasar/cli
 ```
 - pastikan paket global yarn sudah ada di path os, atau bisa jalankan `export PATH="$(yarn global bin):$PATH"` di terminal.
 - cek quasar yang sudah terinstall dengan menjalankan `quasar --version`, jika installasi benar maka akan muncul versi dari quasar yang sudah terinstall.
+
+## Install dari Source code
+### Download/Fork/Clone Source code
+- install dependency aplikasi dengan menjalankan:
+```bash
+yarn
+```
+
+### Jalankan Aplikasi pada mode development (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev
+```
+
+### Lint the files
+```bash
+yarn run lint
+```
+
+### Build Aplikasi untuk Produksi
+```bash
+quasar build
+```
+
+### Customize the configuration
+See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
