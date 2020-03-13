@@ -4,8 +4,9 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', redirect: { name: 'chat-room', params: { room: '2YNbKIbdJA4EtKUXqHme' } } },
-      { path: '/chat/:room', component: () => import('pages/Index.vue'), name: 'chat-room' }
+      { path: '', redirect: { name: 'users' } },
+      { path: '/users', component: () => import('pages/Users.vue'), name: 'users' },
+      { path: '/chat/:user', component: () => import('pages/Chat.vue'), name: 'chat' }
     ]
   },
   {
