@@ -1,10 +1,19 @@
 <template>
   <div class="fixed-center text-center">
+    <p>
+      <img
+        src="~assets/google.svg"
+        style="width:30vw;max-width:150px;"
+      >
+    </p>
+    <p class="text-faded">
+      Selamat Datang
+    </p>
     <q-btn
       color="primary"
       style="width:200px;"
       @click="googleLogin"
-      label="Login"
+      label="Login With Google"
     />
   </div>
 </template>
