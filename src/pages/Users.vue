@@ -32,9 +32,9 @@
       class="full-width"
       separator>
       <q-item
-        v-for="user in users"
+        v-for="user in otherUsers"
         :key="user.uid"
-        :to="{name:'chat', params: { user: user.uid } }"
+        :to="{ name:'chat', params: { user: user.id } }"
         clickable
         v-ripple>
         <q-item-section avatar>
@@ -71,6 +71,11 @@ export default {
   firestore () {
     return {
       users: this.$db.collection('users')
+    }
+  },
+  computed: {
+    otherUsers: function () {
+      return this.users.filter(user => user.id !== this.user.uid)
     }
   },
   methods: {
