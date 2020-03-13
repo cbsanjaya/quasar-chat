@@ -17,6 +17,8 @@ yarn global add @quasar/cli
 ```bash
 yarn
 ```
+- copy file `firebase.conf.example.js` menjadi `firebase.conf.js`.
+- sesuaikan pengaturan dengan firebase.
 
 ### Jalankan Aplikasi pada mode development (hot-code reloading, error reporting, etc.)
 ```bash
