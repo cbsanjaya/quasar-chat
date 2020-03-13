@@ -34,7 +34,7 @@
         :key="message.id"
         :text="[message.text]"
         :sent="message.from == user.uid ? true : false"
-        :stamp="message.at"
+        :stamp="message.at | ago"
       />
     </div>
     <q-footer elevated>
@@ -87,6 +87,13 @@ export default {
       return [this.user.uid, this.otherUser.id].sort().join('_')
     }
   },
+  filters: {
+    ago (timestamp) {
+      if (!timestamp) return ''
+      var val = timestamp.toDate()
+      return val.toLocaleTimeString()
+    }
+  },
   mounted () {
     this.$bind('otherUser', this.$db.collection('users').doc(this.$route.params.user)).then(otherUser => {
       this.$bind('messages',
@@ -97,7 +104,10 @@ export default {
   },
   methods: {
     sendMessage () {
-      console.log('kirim pesan')
+      if (this.newMessage === '') {
+        this.$q.notify('Pesan Tidak Boleh Kosong')
+        return
+      }
       this.$db.collection('messages').add({
         chatGroup: this.chatGroup,
         from: this.user.uid,
