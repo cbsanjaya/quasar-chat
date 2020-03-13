@@ -4,8 +4,13 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', redirect: { name: 'chat-room', params: { room: '2YNbKIbdJA4EtKUXqHme' } } },
+      { path: '/chat/:room', component: () => import('pages/Index.vue'), name: 'chat-room' }
     ]
+  },
+  {
+    path: '/login',
+    component: () => import('pages/Login.vue')
   }
 ]
 
