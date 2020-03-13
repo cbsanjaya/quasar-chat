@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'PageLogin',
   methods: {
     googleLogin () {
       var provider = new this.$firebase.auth.GoogleAuthProvider()
