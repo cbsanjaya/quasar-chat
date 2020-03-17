@@ -11,6 +11,18 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
+      - name: Cache Global NPM
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Cache Local Dependency
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: local_dependency
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -41,6 +53,13 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: dist
+      - name: Cache Global NPM
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
