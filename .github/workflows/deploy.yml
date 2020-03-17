@@ -28,8 +28,7 @@ jobs:
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
-          name: dist-pwa
-          path: dist/pwa
+          name: dist
 
   deploy:
     name: Deploy
@@ -41,11 +40,15 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: dist-pwa
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+          name: dist
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          args: deploy --only hosting
+          node-version: '12'
+      - name: Install Firebase Tools
+        run: npm i -g firebase-tools
+      - name: Deploy to Firebase
+        run: firebase deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: quasar-mini-chat
