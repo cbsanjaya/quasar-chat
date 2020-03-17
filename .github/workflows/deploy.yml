@@ -1,0 +1,51 @@
+name: deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Install Global Quasar
+        run: npm install -g @quasar/cli
+      - name: Intall Dependency
+        run: yarn
+      - name: Put Firebase Config
+        run: 'echo "$FIREBASE_CONFIG" > firebase.conf.js'
+        env:
+          FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
+      - name: Build Application
+        run: quasar build -m pwa
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-pwa
+          path: dist/pwa
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist-pwa
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: quasar-mini-chat
